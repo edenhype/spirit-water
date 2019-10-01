@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Spirit Water</title>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script>
+  <body>
+    <audio loop autoplay>
+      <source src="music.mp3" type="audio/mpeg">=
+    </audio>
+  </body>
+  <script>
+      let socket = io();
+      let players = []
+
+      var scene = new THREE.Scene();
+      var aspect = window.innerWidth / window.innerHeight;
+      var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
+      var renderer = new THREE.WebGLRenderer();
+      var material = new THREE.MeshNormalMaterial();
+      var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+      var planeGeo = new THREE.PlaneGeometry(20, 20)
+      var planeMat = new THREE.MeshBasicMaterial( {color: 0x008855, side: THREE.DoubleSide} );
+      var plane = new THREE.Mesh(planeGeo, planeMat)
+      var raycaster = new THREE.Raycaster()
+      var mouse = new THREE.Vector2()
+      var audio = document.querySelector('audio')
+
+      scene.add(plane)
+
+      function init() {
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+        
+        document.body.querySelector('canvas').addEventListener('click', e => {
+          audio.paused && audio.play()
+
+          mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+          mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+
+          raycaster.setFromCamera( mouse, camera );
+
+          let intersects = raycaster.intersectObjects( scene.children );
+
+          if (intersects.length)
+            socket.emit('move', intersects[0].point)
+        })
+
+        socket.on('welcome', allPlayers => {
+          console.log('hi')
+          players = allPlayers.map(p => {
+            let player = new THREE.Mesh( geometry, material )
+
+            player.name = p.playerId
+            player.position.copy(p.position)
+            scene.add( player );
+
+            return player
+          })
+        })
+
+        socket.on('newplayer', data => {
+          if (players.find(p => p.name === data.playerId))
+            return
+
+          let player = new THREE.Mesh( geometry, material )
+          player.name = data.playerId
+
+          players.push(player)
+          scene.add( player );
+        })
+
+        socket.on('playermovement', data => {
+          let index = players.findIndex(p => p.name === data.playerId)
+
+          if (index < 0) {
+            let player = new THREE.Mesh( geometry, material )
+            player.name = data.playerId
+            
+            index = players.push(player) - 1
+            scene.add(player);
+          }
+
+          console.log(players)
+          players[index].position.copy(data.location)
+        })
+
+        camera.position.z = 10;
+        camera.lookAt(new THREE.Vector3(0, 0, 0))
+
+        render()
+      }
+
+      function render() {
+        requestAnimationFrame( render );
+
+        renderer.render( scene, camera );
+      };
+
+      window.addEventListener('load', init)
+  </script>
+</html>
