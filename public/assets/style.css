@@ -1,0 +1,28 @@
+* {padding: 0; margin: 0}
+body {overflow: hidden;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif}
+
+.progress {
+  position: absolute;
+  bottom: 1vh;
+  width: 33vw;
+  height: 4vh;
+  background: #222;
+}
+.progress .fill-amount {
+  height: 4vh;
+  background: #ff4455;
+}
+#team-0-progress {
+  left: 1vw;
+}
+#team-1-progress {
+  right: 1vw;
+}
+#team-1-progress .fill-amount{
+  float: right;
+}
+.progress.current-team .fill-amount {
+  background: #5544ff;
+}
+
+#timer {position: absolute; bottom: 1vh; width: 100%; color: #fff; font-size: 2em; text-align: center;}
