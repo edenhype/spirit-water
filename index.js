@@ -1,4 +1,5 @@
 let express = require('express')
+let path = require('path')
 let app = express()
 let server = require('http').createServer(app)
 let io = require('socket.io')(server)
@@ -11,7 +12,7 @@ let trees = [
 ]
 let pool = {position: new THREE.Vector3(0, -10, 0), squareRadius: 70, life: 1}
 
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')))
 app.get('/', (_, res) => res.sendFile(__dirname + 'public/index.html'))
 
 io.on('connection', player => {
