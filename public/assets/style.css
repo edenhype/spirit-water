@@ -2,7 +2,6 @@
 body {overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif}
 
 .progress {
-  display: none;
   position: absolute;
   bottom: 1vh;
   width: 33vw;
