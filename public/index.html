@@ -12,7 +12,7 @@
     <div class="progress" id="team-0-progress">
       <div class="fill-amount"></div>
     </div>
-    <p id="timer">0:11</p>
+    
     <div class="progress" id="team-1-progress">
       <div class="fill-amount"></div>
     </div>
@@ -45,7 +45,6 @@
         SocketHandler.on.update(data => {
           document.querySelector(`#team-0-progress .fill-amount`).style.width = ((data.trees[0].life - 1) * 34) + '%'
           document.querySelector(`#team-1-progress .fill-amount`).style.width = ((data.trees[1].life - 1) * 34) + '%'
-          console.log(data.trees[0].life)
         })
 
         ThreeHandler.render()

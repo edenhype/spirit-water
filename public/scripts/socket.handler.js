@@ -7,7 +7,7 @@ const SocketHandler = {
     this.socket = io()
     this.scene = scene
 
-    this.socket.emit('getPlayer', localStorage.getItem(this.localStorageItemName))
+    this.socket.emit('getPlayer', null)//localStorage.getItem(this.localStorageItemName))
 
     this.socket.on('setPlayer', this.onSetName.bind(this))
     this.socket.on('update', this.onUpdate.bind(this))

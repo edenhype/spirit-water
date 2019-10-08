@@ -30,7 +30,6 @@ io.on('connection', player => {
       } else {
         player.name = username
         player.emit('setPlayer', players[index])
-        // console.log('old')
       }
     } else {
       const playerTeam = teamSorter = teamSorter ? 0 : 1
@@ -48,7 +47,6 @@ io.on('connection', player => {
       })
 
       player.emit('setPlayer', players[players.length - 1])
-      // console.log('new')
     }
   })
 
@@ -56,7 +54,6 @@ io.on('connection', player => {
     let index = players.findIndex(p => p.name === player.name)
 
     if (index < 0) return
-    
     players[index].velocity.copy(direction).multiplyScalar(players[index].speed)
   })
 })
@@ -73,7 +70,6 @@ setInterval(function() {
       pool.life -= 0.004
       p.water += 0.008
     } else if (p.water > 0 && distanceToTree < trees[p.team].squareRadius * trees[p.team].life) {
-      console.log(trees[p.team].life)
       trees[p.team].life += 0.0025
       p.water -= 0.008
     }
@@ -82,7 +78,7 @@ setInterval(function() {
       p.position.add(p.position.clone().sub(trees[p.team].position).normalize().multiplyScalar(0.1))
 
     p.position.x = Math.min(Math.max(-40, p.position.x), 40)
-    p.position.y = Math.min(Math.max(-50, p.position.x), 30)
+    p.position.y = Math.min(Math.max(-50, p.position.y), 30)
     p.position.z = 0
   })
 

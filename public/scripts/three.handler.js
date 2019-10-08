@@ -58,6 +58,8 @@ const ThreeHandler = {
       this.trees[0].add(gltf.scene.clone())
       this.trees[1].add(gltf.scene.clone())
     })
+
+    this.testBox = new Entity({name: 'dwdw'}, this.scene)
     
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.gammaOutput = true;
@@ -79,7 +81,7 @@ const ThreeHandler = {
   },
   render() {
     requestAnimationFrame(this.render.bind(this));
-    console.log(this.currentPlayer && this.currentPlayer.position)
+
     this.currentPlayer &&
       this.currentPlayer.position.distanceToSquared(this.currentPlayer.targetPosition) < 0.01 &&
       SocketHandler.setDirection(new THREE.Vector3())
@@ -123,11 +125,11 @@ const ThreeHandler = {
   getMousePlaneIntersection(e) {
     if (!this.currentPlayer) return
 
-    const mouse = {x: (e.clientX / window.innerWidth) * 2 - 1, y: -(e.clientY / window.innerHeight) * 2 + 1}
+    const mouse = {x: (e.clientX / window.innerWidth) * 2 - 1, y: -(e.clientY / window.innerHeight) * 2 + 1, z: 0}
 
     this.raycaster.setFromCamera(mouse, this.camera )
 
-    const intersects = this.raycaster.intersectObject(this.ground, true)
+    const intersects = this.raycaster.intersectObjects(this.ground.children, true)
     const intersection = intersects.length ? intersects[0].point.clone() : this.currentPlayer.position.clone()
     const direction = intersection.clone().sub(this.currentPlayer.position).normalize()
 

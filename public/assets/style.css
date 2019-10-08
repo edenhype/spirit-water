@@ -1,7 +1,8 @@
 * {padding: 0; margin: 0}
-body {overflow: hidden;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif}
+body {overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif}
 
 .progress {
+  display: none;
   position: absolute;
   bottom: 1vh;
   width: 33vw;
